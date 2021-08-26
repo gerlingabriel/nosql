@@ -1,5 +1,7 @@
 package com.project.nosql.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,28 +31,10 @@ public class PostService {
         return new PostRespDTO(post.getDate(), post.getTitle(), post.getBoby(), post.getUser(), post.getComments());
     }
 
-    // public User creadeUser(UserReqDTO fromDTO) {
-     //   User user = new User(null, fromDTO.getNome(), fromDTO.getEmail());
-   //     return repository.insert(user);
-    //}
-
-    /**
-    public void delete(String id) {
-        searchForUser(id);
-        repository.deleteById(id);
-    }
-
-    public UserRespDTO update(UserReqUpdateDTO user){
-        User novoUser = searchForUser(user.getId());
-        return updateDataConvertDTO(user, novoUser);
-    }
-    */
-
     public Post searchForPost(String id){
         Post post = repository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Post não existe"));
         return post;
     }
-
 
     public List<PostRespDTO> findByTitle(String name) {
         return repository.searchTitle(name)
@@ -59,17 +43,23 @@ public class PostService {
                     .collect(Collectors.toList());
     }
 
-    /**
-    // Métodos privados
+    public List<Post> fullsearch(String text, Date minDate, Date maxDate){
 
-    private UserRespDTO updateDataConvertDTO(UserReqUpdateDTO user, User novoUser) {
-        novoUser.setName(user.getNome());
-        novoUser.setEmail(user.getEmail());
-        repository.save(novoUser);
-        return new UserRespDTO(novoUser.getName(), novoUser.getEmail());
+        if (minDate == null) {
+            Calendar c = Calendar.getInstance();
+		    c.set(2019, Calendar.JANUARY, 01);
+            minDate = c.getTime();
+        }
+        
+        if (maxDate == null) {
+            Calendar c = Calendar.getInstance();
+		    c.set(2019, Calendar.JANUARY, 30);
+            maxDate = c.getTime();
+        }
+
+        maxDate = new Date(maxDate.getTime() + 24 *60 * 60 * 1000);
+        return repository.fullserach(text, minDate, maxDate);
     }
-    */
-
 
 
 }

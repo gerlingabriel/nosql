@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.project.nosql.dto.Comments.CommetsDTO;
 import com.project.nosql.dto.userDTO.UserDTO;
 
@@ -17,6 +18,7 @@ public class Post implements Serializable{
     @Id
     private String id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date date;
     private String title;
     private String boby;
