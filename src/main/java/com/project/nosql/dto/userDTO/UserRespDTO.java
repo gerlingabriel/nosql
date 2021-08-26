@@ -1,4 +1,4 @@
-package com.project.nosql.dto;
+package com.project.nosql.dto.userDTO;
 
 import java.io.Serializable;
 

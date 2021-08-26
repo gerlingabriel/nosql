@@ -1,16 +1,18 @@
 package com.project.nosql.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.FieldType;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Document
 public class User implements Serializable{
 
-    @MongoId(targetType = FieldType.OBJECT_ID)
+    @Id
     private String id;
 
     @Indexed
@@ -18,6 +20,9 @@ public class User implements Serializable{
 
     @Indexed
     private String email;
+
+    @DBRef(lazy = true)
+    private List<Post> posts = new ArrayList<>();
 
     public User(String id, String name, String email) {
         this.id = id;
@@ -50,6 +55,14 @@ public class User implements Serializable{
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
     }
 
     @Override
